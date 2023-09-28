@@ -8,6 +8,16 @@ function ReservationGrid() {
   const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate()
 
+  const formatDateTime = (isoDateTime) => {
+    const date = new Date(isoDateTime);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-based
+    const day = String(date.getUTCDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day} 24:00`;
+  }
+
+
   const handleGet = () => { //sends a GET request to get Reservation List
     axios.get('http://127.0.0.1:8000/reservations/') //Put this in a separate API folder if there's time
       .then((response) => {
@@ -89,7 +99,7 @@ function ReservationGrid() {
                 </TableCell>
                 <TableCell>{reservation.phone_number}</TableCell>
                 <TableCell>{
-                  reservation.reservation_datetime
+                  formatDateTime(reservation.reservation_datetime)
                 }</TableCell>
                 <TableCell>{reservation.number_of_guests}</TableCell>
                 <TableCell>
